@@ -14,5 +14,10 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+    <Button
+        android:id="@+id/GoProcess"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Go to image processing"/>
 
 </android.support.constraint.ConstraintLayout>
