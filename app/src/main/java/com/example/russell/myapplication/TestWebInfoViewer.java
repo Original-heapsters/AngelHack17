@@ -2,17 +2,12 @@ package com.example.russell.myapplication;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity {
-
-    Button buttonSignInPage;
+public class TestWebInfoViewer extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        buttonSignInPage = (Button)findViewById(R.id.button);
+        setContentView(R.layout.activity_test_web_info_viewer);
     }
 }
