@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         buttonSignInPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, TestWebInfoViewer.class);
+                Intent intent = new Intent(MainActivity.this, CodeSubmission.class);
                 startActivity(intent);
             }
         });

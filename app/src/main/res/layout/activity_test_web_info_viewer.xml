@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.russell.myapplication.TestWebInfoViewer">
+    tools:context="com.example.russell.myapplication.CodeSubmission">
     <WebView
         android:id="@+id/webViewFoo"
         android:layout_width="match_parent"
