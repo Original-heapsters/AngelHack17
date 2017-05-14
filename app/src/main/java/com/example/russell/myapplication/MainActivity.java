@@ -65,17 +65,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(goToProcessIntent);
             }
         });
-
-        buttonSignInPage = (Button)findViewById(R.id.button);
-
-        buttonSignInPage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, CodeSubmission.class);
-                startActivity(intent);
-            }
-        });
-
         goToSettings = (Button) findViewById(R.id.goToSettings);
         goToSettings.setOnClickListener(new View.OnClickListener(){
            @Override
