@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.russell.myapplication.web.SignInResolver;
-
 public class MainActivity extends AppCompatActivity {
 
     Button buttonSignInPage;
