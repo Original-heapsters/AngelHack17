@@ -104,7 +104,7 @@ public class Settings extends AppCompatActivity {
                 TicketInfo.password = enteredPassword;
 
                 if (TicketInfo.barcodeFull.length() > 0 && TicketInfo.barcodeID.length() > 0) {
-                    Intent barcodeScannerScreen = new Intent(getApplicationContext(), ImageProcessing.class);
+                    Intent barcodeScannerScreen = new Intent(getApplicationContext(), OcrCaptureActivity.class);
                     startActivity(barcodeScannerScreen);
                 } else {
                     Intent codeSubmissionScreen = new Intent(getApplicationContext(), TestWebInfoViewer.class);
