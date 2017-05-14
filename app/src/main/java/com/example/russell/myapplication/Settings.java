@@ -73,6 +73,17 @@ public class Settings extends AppCompatActivity {
                 TicketInfo.username = user.getText().toString();
                 EditText pass = (EditText) findViewById(R.id.passwordText);
                 TicketInfo.password = pass.getText().toString();
+
+                if (TicketInfo.setFull && TicketInfo.setID)
+                {
+                    startActivity(new Intent(getApplicationContext(),TestWebInfoViewer.class));
+                }
+                else
+                {
+                    TicketInfo.setID  = false;
+                    TicketInfo.setFull = false;
+                    startActivity(new Intent(getApplicationContext(),OcrCaptureActivity.class));
+                }
             }
         });
     }
