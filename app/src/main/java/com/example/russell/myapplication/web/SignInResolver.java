@@ -1,18 +1,12 @@
 package com.example.russell.myapplication.web;
 
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.io.StringReader;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
 
 /**
  * Created by andrewbriare on 5/13/17.
@@ -25,25 +19,30 @@ public class SignInResolver {
 
     public SignInResolver()
     {
-        Document doc = null;
-
         try {
-            doc = DocumentBuilderFactory.newInstance()
-                    .newDocumentBuilder().parse(new InputSource(new StringReader(signInUrl)));
+            // get the tables on this page, note I masked the phone number
+            Document doc = Jsoup.connect("http://www.fonefinder.net/findome.php?npa=###&nxx=###&thoublock=####").get();
+            Elements tables = doc.select("table");
 
-            XPathExpression xpath = XPathFactory.newInstance()
-                    .newXPath().compile("//td[text()=\"Description\"]/following-sibling::td[2]");
+            // get the second table, 0 indexed
+            Element secondTable = tables.get(1);
 
-            String result = (String) xpath.evaluate(doc, XPathConstants.STRING);
-        } catch (SAXException e) {
-            e.printStackTrace();
+            // get the columns
+            Elements tds = secondTable.select("td");
+
+            //get the 5th column, 0 indexed
+            Element fifthTd = tds.get(4);
+
+            //get the link in this column
+            Element link = fifthTd.select("a").first();
+
+            //print out the URL
+            System.out.println(link.attr("href"));
+
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (XPathExpressionException e) {
-            e.printStackTrace();
         }
+
     }
 
     public String getResult()
