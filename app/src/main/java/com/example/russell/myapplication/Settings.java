@@ -107,7 +107,7 @@ public class Settings extends AppCompatActivity {
                     Intent barcodeScannerScreen = new Intent(getApplicationContext(), OcrCaptureActivity.class);
                     startActivity(barcodeScannerScreen);
                 } else {
-                    Intent codeSubmissionScreen = new Intent(getApplicationContext(), TestWebInfoViewer.class);
+                    Intent codeSubmissionScreen = new Intent(getApplicationContext(), CodeSubmission.class);
                     startActivity(codeSubmissionScreen);
                 }
             }

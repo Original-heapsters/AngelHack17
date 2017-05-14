@@ -23,7 +23,7 @@ import org.jsoup.Connection;
 
 import java.io.IOException;
 
-public class TestWebInfoViewer extends Activity {
+public class CodeSubmission extends Activity {
 
     // URL Address
     String url = "https://www.calottery.com/sign-in";
@@ -95,7 +95,7 @@ public class TestWebInfoViewer extends Activity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mProgressDialog = new ProgressDialog(TestWebInfoViewer.this);
+            mProgressDialog = new ProgressDialog(CodeSubmission.this);
             mProgressDialog.setTitle("Getting the datas");
             mProgressDialog.setMessage("Loading...");
             mProgressDialog.setIndeterminate(false);
