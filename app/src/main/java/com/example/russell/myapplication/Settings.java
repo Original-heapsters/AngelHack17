@@ -63,7 +63,7 @@ public class Settings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        sharedPrefs = getPreferences(Context.MODE_PRIVATE);
+        sharedPrefs = getSharedPreferences("shichifu", Context.MODE_PRIVATE);
 
         editTextUsername = (EditText) findViewById(R.id.usernameText);
         editTextPassword = (EditText) findViewById(R.id.passwordText);
@@ -94,6 +94,9 @@ public class Settings extends AppCompatActivity {
                 if (switchRememberMe.isChecked()) {
                     editor.putString("username", enteredUsername);
                     editor.putString("password", enteredPassword);
+                } else {
+                    editor.putString("username", "");
+                    editor.putString("password", "");
                 }
 
                 editor.putBoolean("rememberCredentials", switchRememberMe.isChecked());
@@ -103,12 +106,12 @@ public class Settings extends AppCompatActivity {
                 TicketInfo.username = enteredUsername;
                 TicketInfo.password = enteredPassword;
 
-                if (TicketInfo.barcodeFull.length() > 0 && TicketInfo.barcodeID.length() > 0) {
-                    Intent barcodeScannerScreen = new Intent(getApplicationContext(), OcrCaptureActivity.class);
-                    startActivity(barcodeScannerScreen);
-                } else {
+                if (TicketInfo.setFull && TicketInfo.setID) {
                     Intent codeSubmissionScreen = new Intent(getApplicationContext(), CodeSubmission.class);
                     startActivity(codeSubmissionScreen);
+                } else {
+                    Intent barcodeScannerScreen = new Intent(getApplicationContext(), OcrCaptureActivity.class);
+                    startActivity(barcodeScannerScreen);
                 }
             }
         });

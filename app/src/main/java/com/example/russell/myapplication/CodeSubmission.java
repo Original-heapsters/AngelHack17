@@ -1,33 +1,22 @@
 package com.example.russell.myapplication;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.example.russell.myapplication.interfaces.HackWebViewClient;
-
-import org.jsoup.Connection;
-
-import java.io.IOException;
 
 public class CodeSubmission extends Activity {
 
     // URL Address
     String url = "https://www.calottery.com/sign-in";
-    ProgressDialog mProgressDialog;
 
     WebView webView;
     HackWebViewClient webViewClient;
@@ -66,22 +55,15 @@ public class CodeSubmission extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test_web_info_viewer);
+        setContentView(R.layout.activity_code_submission);
 
         webViewClient = new HackWebViewClient();
+        webViewClient.setContext(this);
 
         webView = (WebView)findViewById(R.id.webViewFoo);
         webView.setWebViewClient(webViewClient);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl(url);
-
-
-        Button titlebutton = (Button) findViewById(R.id.button2);
-        titlebutton.setOnClickListener(new OnClickListener() {
-            public void onClick(View arg0) {
-//                new Title().execute();
-            }
-        });
     }
 
 

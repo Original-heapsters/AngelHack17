@@ -1,8 +1,11 @@
 package com.example.russell.myapplication;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,6 +18,8 @@ public class MainActivity extends AppCompatActivity {
     private Intent goToProcessIntent;
     private Button buttonSignInPage;
     private Button goToSettings;
+
+    private SharedPreferences sharedPrefs;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -75,9 +80,23 @@ public class MainActivity extends AppCompatActivity {
         goToSettings.setOnClickListener(new View.OnClickListener(){
            @Override
             public void onClick(View v) {
-               Intent goSettingsIntent = new Intent(getApplicationContext(),Settings.class);
+               Intent goSettingsIntent = new Intent(getApplicationContext(), Settings.class);
                startActivity(goSettingsIntent);
            }
         });
+
+        // Set the stored user credentials, if any
+        sharedPrefs = getSharedPreferences("shichifu", Context.MODE_PRIVATE);
+
+        String savedUsername = sharedPrefs.getString("username", "");
+        String savedPassword = sharedPrefs.getString("password", "");
+
+        if (savedUsername.length() > 0 && savedPassword.length() > 0) {
+            TicketInfo.username = savedUsername;
+            TicketInfo.password = savedPassword;
+        }
+
+        Log.i("Info", "Username: " + TicketInfo.username);
+        Log.i("Info", "Password: " + TicketInfo.password);
     }
 }

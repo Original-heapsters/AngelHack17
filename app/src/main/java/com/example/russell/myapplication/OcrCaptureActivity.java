@@ -95,6 +95,12 @@ public class OcrCaptureActivity extends AppCompatActivity {
         super.onCreate(icicle);
         setContentView(R.layout.activity_ocr_capture);
 
+        // Reset
+        TicketInfo.setID = false;
+        TicketInfo.setFull = false;
+        TicketInfo.barcodeFull = "";
+        TicketInfo.barcodeID = "";
+
         mPreview = (CameraSourcePreview) findViewById(R.id.preview);
         mGraphicOverlay = (GraphicOverlay<OcrGraphic>) findViewById(R.id.graphicOverlay);
 
@@ -298,7 +304,7 @@ public class OcrCaptureActivity extends AppCompatActivity {
 
     public void FoundTicketInfo()
     {
-        startActivity(new Intent(getApplicationContext(),ImageProcessing.class));
+        startActivity(new Intent(this, CodeSubmission.class));
     }
 
     private class ScaleListener implements ScaleGestureDetector.OnScaleGestureListener

@@ -1,5 +1,6 @@
 package com.example.russell.myapplication.interfaces;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Handler;
@@ -9,11 +10,13 @@ import android.view.KeyEvent;
 import android.webkit.ClientCertRequest;
 import android.webkit.HttpAuthHandler;
 import android.webkit.SslErrorHandler;
+import android.webkit.ValueCallback;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import com.example.russell.myapplication.TicketInfo;
 
@@ -24,6 +27,12 @@ import com.example.russell.myapplication.TicketInfo;
 public class HackWebViewClient extends WebViewClient {
 
     private final String TAG = "HackWebViewClient";
+
+    private Context context;
+
+    public void setContext(Context ctx) {
+        context = ctx;
+    }
 
     @Override
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
@@ -43,6 +52,19 @@ public class HackWebViewClient extends WebViewClient {
             handleRedirectToEntryPage(view);
         } else if (url.contains("www.calottery.com/play/second-chance/scratchers-second-chance")) {
             handleCodeEntryPage(view);
+        } else {
+            view.evaluateJavascript(
+                    "(function() { return ('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>'); })();",
+                    new ValueCallback<String>() {
+                        @Override
+                        public void onReceiveValue(String html) {
+                            if (html.contains("ticketId") && html.contains("entryCode") && html.contains("submissionId")) {
+                                Toast.makeText(context, "Code submitted!!!", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(context, "Code is invalid. Please try again.", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
         }
     }
 
