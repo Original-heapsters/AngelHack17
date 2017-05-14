@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_item_home"
+        android:icon="@mipmap/ic_home_black_24dp"
+        android:title="Go Home"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu_item_new_barcode"
+        android:icon="@mipmap/ic_barcode_scan_black_24dp"
+        android:title="Scan new barcode"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu_item_settings"
+        android:icon="@mipmap/ic_account_settings_variant_black_24dp"
+        android:title="Change settings"
+        app:showAsAction="always" />
+
+</menu>

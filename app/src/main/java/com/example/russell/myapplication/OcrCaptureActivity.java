@@ -18,6 +18,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
@@ -51,6 +54,38 @@ public class OcrCaptureActivity extends AppCompatActivity {
 
     // Helper objects for detecting taps and pinches.
     private ScaleGestureDetector scaleGestureDetector;
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu items for use in the action bar
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        MenuItem settings = menu.findItem(R.id.menu_item_settings);
+        settings.setVisible(true);
+        MenuItem newBarcode = menu.findItem(R.id.menu_item_new_barcode);
+        newBarcode.setVisible(true);
+        MenuItem goHome = menu.findItem(R.id.menu_item_home);
+        goHome.setVisible(true);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_item_new_barcode:
+                startActivity(new Intent(getApplicationContext(), OcrCaptureActivity.class));
+                return true;
+            case R.id.menu_item_settings:
+                startActivity(new Intent(getApplicationContext(), Settings.class));
+                return true;
+            case R.id.menu_item_home:
+                startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     /**
      * Initializes the UI and creates the detector pipeline.

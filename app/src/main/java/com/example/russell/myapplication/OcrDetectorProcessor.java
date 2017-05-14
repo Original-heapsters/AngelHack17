@@ -27,13 +27,13 @@ public class OcrDetectorProcessor implements Detector.Processor<TextBlock> {
             TextBlock item = items.valueAt(i);
             String detectedText = item.getValue().replace(" ", "");
 
-            if (checkFull(detectedText))
+            if (checkFull(detectedText) && !TicketInfo.setFull)
             {
                 TicketInfo.barcodeFull = detectedText.substring(0,13);
                 TicketInfo.setFull = true;
             }
 
-            if (checkID(detectedText))
+            if (checkID(detectedText) && !TicketInfo.setID)
             {
                 TicketInfo.barcodeID = detectedText;
                 TicketInfo.setID = true;
@@ -44,11 +44,10 @@ public class OcrDetectorProcessor implements Detector.Processor<TextBlock> {
                 OcrGraphic graphic = new OcrGraphic(mGraphicOverlay, item);
                 mGraphicOverlay.add(graphic);
             }
-
-            if (TicketInfo.setFull && TicketInfo.setID && checkFull(TicketInfo.barcodeFull) && checkID(TicketInfo.barcodeID))
-            {
-                parent.FoundTicketInfo();
-            }
+        }
+        if (TicketInfo.setFull && TicketInfo.setID)
+        {
+            parent.FoundTicketInfo();
         }
     }
 
