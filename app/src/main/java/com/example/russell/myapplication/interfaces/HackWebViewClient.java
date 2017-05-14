@@ -45,17 +45,35 @@ public class HackWebViewClient extends WebViewClient {
     }
 
     private void handleLogIn(WebView view) {
-        view.evaluateJavascript("document.getElementById('objBody_content_0_leftcolumn_0_txtEmail').value = 'hellaandrew@gmail.com';", null);
-        view.evaluateJavascript("document.getElementById('objBody_content_0_leftcolumn_0_txtPassword').value = '" + "Grenadier1!@" + "';", null);
-        view.evaluateJavascript("__doPostBack('objBody$content_0$leftcolumn_0$lbSubmit','');", null);
+        StringBuilder sbEmail = new StringBuilder();
+        sbEmail.append("document.getElementById('objBody_content_0_leftcolumn_0_txtEmail').value = '");
+//        sbEmail.append(email);
+        sbEmail.append("';");
+
+        StringBuilder sbPassword = new StringBuilder();
+        sbPassword.append("document.getElementById('objBody_content_0_leftcolumn_0_txtPassword').value = '");
+//        sbPassword.append(password);
+        sbPassword.append("';");
+
+        String loginCommand = "__doPostBack('objBody$content_0$leftcolumn_0$lbSubmit','');";
+
+        view.evaluateJavascript(sbEmail.toString(), null);
+        view.evaluateJavascript(sbPassword.toString(), null);
+        view.evaluateJavascript(loginCommand, null);
     }
 
     private void handleRedirectToEntryPage(WebView view) {
-        view.loadUrl("https://www.calottery.com/play/second-chance/scratchers-second-chance?login=true");
+        String navigateToCodeEntry = "__doPostBack('objBody$content_0$leftcolumn_0$lbSubmit','');";
+        view.loadUrl(navigateToCodeEntry);
     }
 
     private void handleCodeEntryPage(WebView view) {
-//        view.loadUrl("https://www.calottery.com/SecondChanceSubmit.ashx?entrycode=" + "" + "&ticketid=" + "", null);
-        view.loadUrl("https://www.calottery.com/SecondChanceSubmit.ashx?entrycode=" + "1243699484079" + "&ticketid=" + "1017616", null);
+        StringBuilder sbCodeSubmission = new StringBuilder();
+        sbCodeSubmission.append("https://www.calottery.com/SecondChanceSubmit.ashx?entrycode=");
+//        sbCodeSubmission.append(longCode);
+        sbCodeSubmission.append("&ticketid=");
+//        sbCodeSubmission.append(shortCode);
+
+        view.loadUrl(sbCodeSubmission.toString(), null);
     }
 }
