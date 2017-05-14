@@ -6,14 +6,31 @@
     android:layout_height="match_parent"
     tools:context="com.example.russell.myapplication.MainActivity">
 
+    <ImageView
+        android:layout_width="550dp"
+        android:layout_height="450dp"
+        app:srcCompat="@drawable/shichifu50"
+        android:id="@+id/shichifu"
+        android:layout_centerHorizontal="true"
+        android:alpha="0.7"/>
+    <ImageView
+        android:layout_width="350dp"
+        android:layout_height="550dp"
+        app:srcCompat="@android:drawable/screen_background_dark"
+        android:id="@+id/imageView"
+        android:layout_centerHorizontal="true"
+        android:alpha="0.7"
+        android:layout_alignTop="@+id/button"
+        android:layout_marginBottom="160dp" />
+
     <Button
         android:id="@+id/GoProcess"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:text="Go to image processing"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="133dp" />
+        android:layout_marginBottom="166dp" />
 
     <Button
         android:text="Settings"
@@ -22,7 +39,7 @@
         android:id="@+id/goToSettings"
         tools:layout_editor_absoluteY="169dp"
         tools:layout_editor_absoluteX="113dp"
-        android:layout_marginTop="72dp"
+        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
     <Button
@@ -32,7 +49,9 @@
         android:text="Sign In page"
         tools:layout_editor_absoluteY="0dp"
         tools:layout_editor_absoluteX="0dp"
-        android:layout_marginTop="73dp"
-        android:layout_below="@+id/GoProcess"
+        android:layout_marginBottom="70dp"
+        android:layout_alignBottom="@+id/goToSettings"
         android:layout_centerHorizontal="true" />
+
+
 </RelativeLayout>
