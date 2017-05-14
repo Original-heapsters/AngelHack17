@@ -10,7 +10,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/shichifu50"
+        android:src="@drawable/shichifu_main"
         android:id="@+id/shichifu"
         android:layout_centerHorizontal="true"
         android:alpha="0.7"/>
