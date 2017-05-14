@@ -15,6 +15,8 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.example.russell.myapplication.TicketInfo;
+
 /**
  * Created by andrewbriare on 5/13/17.
  */
@@ -47,12 +49,12 @@ public class HackWebViewClient extends WebViewClient {
     private void handleLogIn(WebView view) {
         StringBuilder sbEmail = new StringBuilder();
         sbEmail.append("document.getElementById('objBody_content_0_leftcolumn_0_txtEmail').value = '");
-//        sbEmail.append(email);
+        sbEmail.append(TicketInfo.username);
         sbEmail.append("';");
 
         StringBuilder sbPassword = new StringBuilder();
         sbPassword.append("document.getElementById('objBody_content_0_leftcolumn_0_txtPassword').value = '");
-//        sbPassword.append(password);
+        sbPassword.append(TicketInfo.password);
         sbPassword.append("';");
 
         String loginCommand = "__doPostBack('objBody$content_0$leftcolumn_0$lbSubmit','');";
@@ -63,7 +65,7 @@ public class HackWebViewClient extends WebViewClient {
     }
 
     private void handleRedirectToEntryPage(WebView view) {
-        String navigateToCodeEntry = "__doPostBack('objBody$content_0$leftcolumn_0$lbSubmit','');";
+        String navigateToCodeEntry = "https://www.calottery.com/play/second-chance/scratchers-second-chance";
         view.loadUrl(navigateToCodeEntry);
     }
 
