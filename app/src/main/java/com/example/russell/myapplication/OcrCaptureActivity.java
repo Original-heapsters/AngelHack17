@@ -36,6 +36,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -48,13 +49,15 @@ import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
 
 import java.io.IOException;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Activity for the multi-tracker app.  This app detects text and displays the value with the
  * rear facing camera. During detection overlay graphics are drawn to indicate the position,
  * size, and contents of each TextBlock.
  */
-public final class OcrCaptureActivity extends AppCompatActivity {
+public class OcrCaptureActivity extends AppCompatActivity implements Observer {
     private static final String TAG = "OcrCaptureActivity";
 
     // Intent request code to handle updating play services if needed.
@@ -75,6 +78,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     // Helper objects for detecting taps and pinches.
     private ScaleGestureDetector scaleGestureDetector;
     private GestureDetector gestureDetector;
+    private TextView ticketInfo;
 
     /**
      * Initializes the UI and creates the detector pipeline.
@@ -83,6 +87,8 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.activity_ocr_capture);
+
+
 
         mPreview = (CameraSourcePreview) findViewById(R.id.preview);
         mGraphicOverlay = (GraphicOverlay<OcrGraphic>) findViewById(R.id.graphicOverlay);
@@ -303,6 +309,17 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         if (mCameraSource != null) {
             try {
                 mPreview.start(mCameraSource, mGraphicOverlay);
+                mGraphicOverlay.setOnGenericMotionListener(new View.OnGenericMotionListener() {
+                    @Override
+                    public boolean onGenericMotion(View v, MotionEvent event) {
+                        if(TicketInfo.setFull && TicketInfo.setID)
+                        {
+                            onTap(1,1);
+
+                        }
+                        return false;
+                    }
+                });
             } catch (IOException e) {
                 Log.e(TAG, "Unable to start camera source.", e);
                 mCameraSource.release();
@@ -319,7 +336,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
      * @param rawY - the raw position of the tap.
      * @return true if the activity is ending.
      */
-    private boolean onTap(float rawX, float rawY) {
+    public boolean onTap(float rawX, float rawY) {
         OcrGraphic graphic = mGraphicOverlay.getGraphicAtLocation(rawX, rawY);
         TextBlock text = null;
         if (graphic != null) {
@@ -337,7 +354,14 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         else {
             Log.d(TAG,"no text detected");
         }
+        startActivity(new Intent(getApplicationContext(),ImageProcessing.class));
         return text != null;
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+
+
     }
 
     private class CaptureGestureListener extends GestureDetector.SimpleOnGestureListener {

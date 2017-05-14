@@ -58,6 +58,10 @@ public class ImageProcessing extends AppCompatActivity {
         });
 
         Toast.makeText(getApplicationContext(),DATA_PATH,Toast.LENGTH_LONG);
+        textView = (TextView) findViewById(R.id.ImageText);
+        if(TicketInfo.setFull && TicketInfo.setID) {
+            textView.setText("Ticket full" + TicketInfo.barcodeFull + " \n Ticket ID " + TicketInfo.barcodeID);
+        }
     }
 
 
