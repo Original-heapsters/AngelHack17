@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -22,21 +21,16 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.api.CommonStatusCodes;
 import com.example.russell.myapplication.ui.camera.CameraSource;
 import com.example.russell.myapplication.ui.camera.CameraSourcePreview;
 import com.example.russell.myapplication.ui.camera.GraphicOverlay;
-import com.google.android.gms.vision.text.TextBlock;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.vision.text.TextRecognizer;
 
 import java.io.IOException;
-import java.util.Observable;
-import java.util.Observer;
 
 public class OcrCaptureActivity extends AppCompatActivity {
     private static final String TAG = "OcrCaptureActivity";
@@ -50,7 +44,6 @@ public class OcrCaptureActivity extends AppCompatActivity {
     // Constants used to pass extra data in the intent
     public static final String AutoFocus = "AutoFocus";
     public static final String UseFlash = "UseFlash";
-    public static final String TextBlockObject = "String";
 
     private CameraSource mCameraSource;
     private CameraSourcePreview mPreview;
@@ -58,7 +51,6 @@ public class OcrCaptureActivity extends AppCompatActivity {
 
     // Helper objects for detecting taps and pinches.
     private ScaleGestureDetector scaleGestureDetector;
-    private GestureDetector gestureDetector;
 
     /**
      * Initializes the UI and creates the detector pipeline.
@@ -83,7 +75,6 @@ public class OcrCaptureActivity extends AppCompatActivity {
             requestCameraPermission();
         }
 
-        gestureDetector = new GestureDetector(this, new CaptureGestureListener());
         scaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
 
         Snackbar.make(mGraphicOverlay, "Tap to capture. Pinch/Stretch to zoom",
@@ -126,9 +117,7 @@ public class OcrCaptureActivity extends AppCompatActivity {
     public boolean onTouchEvent(MotionEvent e) {
         boolean b = scaleGestureDetector.onTouchEvent(e);
 
-        boolean c = gestureDetector.onTouchEvent(e);
-
-        return b || c || super.onTouchEvent(e);
+        return b || super.onTouchEvent(e);
     }
 
     /**
@@ -272,35 +261,9 @@ public class OcrCaptureActivity extends AppCompatActivity {
         }
     }
 
-    public boolean onTap(float rawX, float rawY)
+    public void FoundTicketInfo()
     {
-//        OcrGraphic graphic = mGraphicOverlay.getGraphicAtLocation(rawX, rawY);
-//        TextBlock text = null;
-//        if (graphic != null) {
-//            text = graphic.getTextBlock();
-//            if (text != null && text.getValue() != null) {
-//                Intent data = new Intent();
-//                data.putExtra(TextBlockObject, text.getValue());
-//                setResult(CommonStatusCodes.SUCCESS, data);
-//                finish();
-//            }
-//            else {
-//                Log.d(TAG, "text data is null");
-//            }
-//        }
-//        else {
-//            Log.d(TAG,"no text detected");
-//        }
         startActivity(new Intent(getApplicationContext(),ImageProcessing.class));
-        return true;
-    }
-
-    private class CaptureGestureListener extends GestureDetector.SimpleOnGestureListener {
-
-        @Override
-        public boolean onSingleTapConfirmed(MotionEvent e) {
-            return onTap(e.getRawX(), e.getRawY()) || super.onSingleTapConfirmed(e);
-        }
     }
 
     private class ScaleListener implements ScaleGestureDetector.OnScaleGestureListener

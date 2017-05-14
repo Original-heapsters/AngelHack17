@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        goToProcessIntent = new Intent(getApplicationContext(),ImageProcessing.class);
+        goToProcessIntent = new Intent(getApplicationContext(),OcrCaptureActivity.class);
         goToProcess = (Button) findViewById(R.id.GoProcess);
         goToProcess.setOnClickListener(new View.OnClickListener() {
             @Override

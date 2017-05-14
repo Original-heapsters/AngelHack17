@@ -45,10 +45,9 @@ public class OcrDetectorProcessor implements Detector.Processor<TextBlock> {
                 mGraphicOverlay.add(graphic);
             }
 
-            if (TicketInfo.setFull && TicketInfo.setID)
+            if (TicketInfo.setFull && TicketInfo.setID && checkFull(TicketInfo.barcodeFull) && checkID(TicketInfo.barcodeID))
             {
-                parent.onTap(1,1);
-
+                parent.FoundTicketInfo();
             }
         }
     }
