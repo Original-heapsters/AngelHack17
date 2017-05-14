@@ -18,8 +18,6 @@ import org.w3c.dom.Text;
 public class Settings extends AppCompatActivity {
     private Button newAccButton;
     private Button loginButton;
-    static String username;
-    static String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +36,9 @@ public class Settings extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 EditText user = (EditText) findViewById(R.id.usernameText);
-                username = user.getText().toString();
-
+                TicketInfo.username = user.getText().toString();
                 EditText pass = (EditText) findViewById(R.id.passwordText);
-                password = pass.getText().toString();
+                TicketInfo.password = pass.getText().toString();
             }
         });
     }

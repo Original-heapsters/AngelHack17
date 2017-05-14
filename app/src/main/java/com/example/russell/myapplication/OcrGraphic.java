@@ -67,7 +67,6 @@ public class OcrGraphic extends GraphicOverlay.Graphic {
 
     public void checkID(String input)
     {
-        return 
     }
 
     public int getId() {
