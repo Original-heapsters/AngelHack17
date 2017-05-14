@@ -10,15 +10,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.russell.myapplication.Settings">
 
-    <Button
-        android:text="Login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="51dp"
-        android:id="@+id/buttonLogin" />
-
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -41,16 +32,6 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
-    <Button
-        android:text="Create account"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/buttonLogin"
-        android:layout_alignLeft="@+id/passwordText"
-        android:layout_alignStart="@+id/passwordText"
-        android:layout_marginBottom="31dp"
-        android:id="@+id/buttonCreateAcc" />
-
     <TextView
         android:text="Username"
         android:layout_width="wrap_content"
@@ -72,5 +53,24 @@
         android:layout_alignBottom="@+id/passwordText"
         android:layout_alignRight="@+id/textUsername"
         android:layout_alignEnd="@+id/textUsername" />
+
+    <Button
+        android:text="Create account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:id="@+id/buttonCreateAcc"
+        android:layout_above="@+id/buttonLogin"
+        android:layout_toRightOf="@+id/textPassword"
+        android:layout_toEndOf="@+id/textPassword" />
+
+    <Button
+        android:text="Login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="49dp"
+        android:id="@+id/buttonLogin"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
