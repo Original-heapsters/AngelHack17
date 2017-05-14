@@ -42,22 +42,6 @@ public class OcrGraphic extends GraphicOverlay.Graphic {
     OcrGraphic(GraphicOverlay overlay, TextBlock text) {
         super(overlay);
 
-        String detectedText = text.getValue();
-
-        detectedText = detectedText.replace(" ", "");
-
-        if (checkFull(detectedText))
-        {
-            TicketInfo.barcodeFull = detectedText.substring(0,13);
-            TicketInfo.setFull = true;
-        }
-
-        if (checkID(detectedText))
-        {
-            TicketInfo.barcodeID = detectedText;
-            TicketInfo.setID = true;
-        }
-
         mText = text;
 
         if (sRectPaint == null) {
@@ -74,50 +58,6 @@ public class OcrGraphic extends GraphicOverlay.Graphic {
         }
         // Redraw the overlay, as this graphic has been added.
         postInvalidate();
-    }
-
-    public boolean checkFull(String input)
-    {
-        boolean isFull = true;
-
-        if (input.length() != 16)
-        {
-            isFull = false;
-        }
-        else
-        {
-            isFull = true;
-        }
-
-        try {
-            Double.parseDouble(input);
-        } catch(NumberFormatException e) {
-            isFull = false;
-        } catch(NullPointerException e) {
-            isFull = false;
-        }
-        return isFull;
-
-    }
-
-    public boolean checkID(String input)
-    {
-        boolean isID = true;
-
-        if (input.length() != 7)
-        {
-            isID = false;
-        }
-
-        try {
-            Integer.parseInt(input);
-        } catch(NumberFormatException e) {
-            isID = false;
-        } catch(NullPointerException e) {
-            isID = false;
-        }
-
-        return isID;
     }
 
     public int getId() {

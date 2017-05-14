@@ -1,19 +1,4 @@
-package com.example.russell.myapplication;/*
- * Copyright (C) The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
+package com.example.russell.myapplication;
 import android.util.SparseArray;
 
 import com.example.russell.myapplication.ui.camera.GraphicOverlay;
@@ -27,34 +12,120 @@ import com.google.android.gms.vision.text.TextBlock;
 public class OcrDetectorProcessor implements Detector.Processor<TextBlock> {
 
     private GraphicOverlay<OcrGraphic> mGraphicOverlay;
+    private OcrCaptureActivity parent;
 
-    OcrDetectorProcessor(GraphicOverlay<OcrGraphic> ocrGraphicOverlay) {
+    OcrDetectorProcessor(GraphicOverlay<OcrGraphic> ocrGraphicOverlay, OcrCaptureActivity parentRef) {
         mGraphicOverlay = ocrGraphicOverlay;
+        parent = parentRef;
     }
 
-    /**
-     * Called by the detector to deliver detection results.
-     * If your application called for it, this could be a place to check for
-     * equivalent detections by tracking TextBlocks that are similar in location and content from
-     * previous frames, or reduce noise by eliminating TextBlocks that have not persisted through
-     * multiple detections.
-     */
     @Override
     public void receiveDetections(Detector.Detections<TextBlock> detections) {
         mGraphicOverlay.clear();
         SparseArray<TextBlock> items = detections.getDetectedItems();
         for (int i = 0; i < items.size(); ++i) {
             TextBlock item = items.valueAt(i);
-            OcrGraphic graphic = new OcrGraphic(mGraphicOverlay, item);
-            mGraphicOverlay.add(graphic);
+            String detectedText = item.getValue().replace(" ", "");
+
+            if (checkFull(detectedText) && !TicketInfo.setFull)
+            {
+                TicketInfo.barcodeFull = detectedText.substring(0,13);
+                TicketInfo.setFull = true;
+            }
+
+            if (checkID(detectedText) && !TicketInfo.setID)
+            {
+                TicketInfo.barcodeID = detectedText;
+                TicketInfo.setID = true;
+            }
+
+            if (checkID(detectedText) || checkFull(detectedText) || checkNumber(detectedText) || checkDate(detectedText)) {
+
+                OcrGraphic graphic = new OcrGraphic(mGraphicOverlay, item);
+                mGraphicOverlay.add(graphic);
+            }
+        }
+        if (TicketInfo.setFull && TicketInfo.setID)
+        {
+            parent.FoundTicketInfo();
         }
     }
 
-    /**
-     * Frees the resources associated with this detection processor.
-     */
     @Override
     public void release() {
         mGraphicOverlay.clear();
+    }
+
+    public boolean checkFull(String input)
+    {
+        boolean isFull = true;
+
+        if (input.length() != 16)
+        {
+            isFull = false;
+        }
+        else
+        {
+            isFull = true;
+        }
+
+        try {
+            Double.parseDouble(input);
+        } catch(NumberFormatException e) {
+            isFull = false;
+        } catch(NullPointerException e) {
+            isFull = false;
+        }
+        return isFull;
+
+    }
+
+    public boolean checkDate(String input)
+    {
+        boolean isDate = true;
+
+        if (input.contains("/") && input.length() >= 10 && input.length() < 12)
+        {
+            return isDate;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public boolean checkNumber(String input)
+    {
+        boolean isNumber = true;
+
+        try {
+            Double.parseDouble(input);
+        } catch(NumberFormatException e) {
+            isNumber = false;
+        } catch(NullPointerException e) {
+            isNumber = false;
+        }
+
+        return isNumber;
+    }
+
+    public boolean checkID(String input)
+    {
+        boolean isID = true;
+
+        if (input.length() != 7)
+        {
+            isID = false;
+        }
+
+        try {
+            Integer.parseInt(input);
+        } catch(NumberFormatException e) {
+            isID = false;
+        } catch(NullPointerException e) {
+            isID = false;
+        }
+
+        return isID;
     }
 }
