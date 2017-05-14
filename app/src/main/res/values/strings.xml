@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">LottoScanner</string>
     <string name="title_activity_test_web_info_viewer">TestWebInfoViewer</string>
 </resources>
