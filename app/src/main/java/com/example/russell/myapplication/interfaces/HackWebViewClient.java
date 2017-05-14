@@ -72,9 +72,9 @@ public class HackWebViewClient extends WebViewClient {
     private void handleCodeEntryPage(WebView view) {
         StringBuilder sbCodeSubmission = new StringBuilder();
         sbCodeSubmission.append("https://www.calottery.com/SecondChanceSubmit.ashx?entrycode=");
-//        sbCodeSubmission.append(longCode);
+        sbCodeSubmission.append(TicketInfo.barcodeFull);
         sbCodeSubmission.append("&ticketid=");
-//        sbCodeSubmission.append(shortCode);
+        sbCodeSubmission.append(TicketInfo.barcodeID);
 
         view.loadUrl(sbCodeSubmission.toString(), null);
     }
