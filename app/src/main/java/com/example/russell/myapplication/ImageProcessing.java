@@ -1,10 +1,14 @@
 package com.example.russell.myapplication;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.hardware.Camera;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -15,7 +19,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.googlecode.tesseract.android.TessBaseAPI;
+import com.google.android.gms.vision.CameraSource;
+import com.google.android.gms.vision.text.TextRecognizer;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -32,8 +37,8 @@ public class ImageProcessing extends AppCompatActivity {
     String result = "empty";
     private static final String lang = "eng";
 
-    private TessBaseAPI tessBaseApi;
-    private static final String DATA_PATH = Environment.getExternalStorageDirectory().toString() + "/TesseractSample/";
+    //private TessBaseAPI tessBaseApi;
+    private static final String DATA_PATH = Environment.getExternalStorageDirectory().toString() + "/LottoScanner/";
     private static final String TESSDATA = "tessdata";
     Uri outputFileUri;
     @Override
@@ -47,9 +52,12 @@ public class ImageProcessing extends AppCompatActivity {
         takePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dispatchTakePictureIntent();
+                startActivity(new Intent(getApplicationContext(),OcrCaptureActivity.class));
+                //dispatchTakePictureIntent();
             }
         });
+
+        Toast.makeText(getApplicationContext(),DATA_PATH,Toast.LENGTH_LONG);
     }
 
 
@@ -57,23 +65,9 @@ public class ImageProcessing extends AppCompatActivity {
 
 
     private void dispatchTakePictureIntent() {
-        try {
-            String IMGS_PATH = Environment.getExternalStorageDirectory().toString() + "/TesseractSample/imgs";
-            prepareDirectory(IMGS_PATH);
-
-            String img_path = IMGS_PATH + "/ocr.jpg";
-
-            outputFileUri = Uri.fromFile(new File(img_path));
-
-            final Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            //takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-
-
-
-            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-            }
-        } catch (Exception e) {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
     }
 
@@ -164,7 +158,7 @@ public class ImageProcessing extends AppCompatActivity {
 
         }
     }
-
+/*
     private String extractText(Bitmap bitmap) {
         try {
             tessBaseApi = new TessBaseAPI();
@@ -194,14 +188,86 @@ public class ImageProcessing extends AppCompatActivity {
         tessBaseApi.end();
         return extractedText;
     }
+    */
+
+   private String extractText(Bitmap bitmap)
+    {
+        /*
+        File dataPath = Environment.getDataDirectory();
+        // or any other dir where you app has file write permissions
+
+        File tessSubDir = new File("/mnt/sdcard/tesseract");
+
+        tessSubDir.mkdirs(); // create if it does not exist
+        TessBaseAPI tessBaseApi = new TessBaseAPI();
+        tessBaseApi.init(tessSubDir.getAbsolutePath(), "eng");
+        tessBaseApi.setImage(bitmap);
+        String extractedText = tessBaseApi.getUTF8Text();
+        tessBaseApi.end();
+        */
+        return "Hello";
+    }
+
+    private void createCameraSource(boolean autoFocus, boolean useFlash) {
+        Context context = getApplicationContext();
+
+        // TODO: Create the TextRecognizer
+        TextRecognizer textRecognizer = new TextRecognizer.Builder(context).build();
+        // TODO: Set the TextRecognizer's Processor.
+        // Create the TextRecognizer
+        //textRecognizer.setProcessor(new OcrDetectorProcessor(mGraphicOverlay));
+
+        // TODO: Check if the TextRecognizer is operational.
+        if (!textRecognizer.isOperational()) {
+
+            // Check for low storage.  If there is low storage, the native library will not be
+            // downloaded, so detection will not become operational.
+            IntentFilter lowstorageFilter = new IntentFilter(Intent.ACTION_DEVICE_STORAGE_LOW);
+            boolean hasLowStorage = registerReceiver(null, lowstorageFilter) != null;
+
+            if (hasLowStorage) {
+                Toast.makeText(this, "low storage", Toast.LENGTH_LONG).show();
+            }
+        }
+
+        CameraSource mCameraSource =
+                new CameraSource.Builder(getApplicationContext(), textRecognizer)
+                        .setFacing(CameraSource.CAMERA_FACING_BACK)
+                        .setRequestedPreviewSize(1280, 1024)
+                        .setRequestedFps(15.0f)
+                        .build();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //making photo
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            doOCR();
-        } else {
-            Toast.makeText(this, "ERROR: Image was not obtained.", Toast.LENGTH_SHORT).show();
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            userImg.setImageBitmap(imageBitmap);
+            new runOCR().execute(imageBitmap);
+        }
+    }
+
+    private class runOCR extends AsyncTask<Bitmap, Void, String> {
+        String imgText= "";
+        @Override
+        protected String doInBackground(Bitmap... params) {
+                imgText = extractText(params[0]);
+            return imgText;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            Toast.makeText(getApplicationContext(),result,Toast.LENGTH_SHORT);
+
+        }
+
+        @Override
+        protected void onPreExecute() {}
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            Toast.makeText(getApplicationContext(),"Working.",Toast.LENGTH_SHORT);
         }
     }
 }
