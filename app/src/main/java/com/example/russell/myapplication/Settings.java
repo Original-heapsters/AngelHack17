@@ -80,8 +80,6 @@ public class Settings extends AppCompatActivity {
                 }
                 else
                 {
-                    TicketInfo.setID  = false;
-                    TicketInfo.setFull = false;
                     startActivity(new Intent(getApplicationContext(),OcrCaptureActivity.class));
                 }
             }

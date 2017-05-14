@@ -67,8 +67,6 @@ public class ImageProcessing extends AppCompatActivity {
 
         if(TicketInfo.setFull && TicketInfo.setID) {
             textView.setText("Ticket full" + TicketInfo.barcodeFull + " \n Ticket ID " + TicketInfo.barcodeID);
-            TicketInfo.setFull = false;
-            TicketInfo.setID = false;
         }
     }
 }
