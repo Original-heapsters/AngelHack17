@@ -1,48 +1,58 @@
 package com.example.russell.myapplication;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Map;
-
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
-import org.jsoup.helper.HttpConnection;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import org.w3c.dom.Text;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.example.russell.myapplication.interfaces.HackWebViewClient;
+
+import org.jsoup.Connection;
+
+import java.io.IOException;
 
 public class TestWebInfoViewer extends Activity {
 
     // URL Address
     String url = "https://www.calottery.com/sign-in";
     ProgressDialog mProgressDialog;
-    TextView tv;
+
+    WebView webView;
+    HackWebViewClient webViewClient;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_web_info_viewer);
 
-        tv = (TextView)findViewById(R.id.textView);
+        webViewClient = new HackWebViewClient();
+
+        webView = (WebView)findViewById(R.id.webViewFoo);
+        webView.setWebViewClient(webViewClient);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.loadUrl(url);
+
 
         Button titlebutton = (Button) findViewById(R.id.button2);
         titlebutton.setOnClickListener(new OnClickListener() {
             public void onClick(View arg0) {
-                new Title().execute();
+//                new Title().execute();
             }
         });
     }
 
+
+
+
+/*
     // Title AsyncTask
     private class Title extends AsyncTask<Void, Void, Void> {
         String title = "";
@@ -63,8 +73,8 @@ public class TestWebInfoViewer extends Activity {
                 Document document = Jsoup.connect(url).get();
 
                 document.getElementById("objBody_content_0_leftcolumn_0_txtEmail").attr("value", "hellaandrew@gmail.com");
-                
-                /*
+
+
                 //With this you login and a session is created
                 Connection.Response res = Jsoup.connect(url)
                         .data("$Email", "hellaandrew@gmail.com",
@@ -98,7 +108,7 @@ public class TestWebInfoViewer extends Activity {
                         "Body: " + submitCode.body() + "\n\n" +
                         "Content Type: " + submitCode.contentType() + "\n\n" +
                         "Status Message: " + submitCode.statusMessage() + "\n\n";
-                        */
+
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (Exception e) {
@@ -113,4 +123,5 @@ public class TestWebInfoViewer extends Activity {
             mProgressDialog.dismiss();
         }
     }
+        */
 }
