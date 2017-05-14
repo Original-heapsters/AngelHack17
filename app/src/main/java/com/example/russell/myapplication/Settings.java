@@ -1,26 +1,31 @@
 package com.example.russell.myapplication;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 
 public class Settings extends AppCompatActivity {
+
     private Button newAccButton;
     private Button loginButton;
+
+    private EditText editTextUsername;
+    private EditText editTextPassword;
+
+    private Switch switchRememberMe;
+
+    private SharedPreferences sharedPrefs;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -58,37 +63,60 @@ public class Settings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+        sharedPrefs = getPreferences(Context.MODE_PRIVATE);
+
+        editTextUsername = (EditText) findViewById(R.id.usernameText);
+        editTextPassword = (EditText) findViewById(R.id.passwordText);
+        switchRememberMe = (Switch) findViewById(R.id.toggle);
+
+        editTextUsername.setText(sharedPrefs.getString("username", ""));
+        editTextPassword.setText(sharedPrefs.getString("password", ""));
+        switchRememberMe.setChecked(sharedPrefs.getBoolean("rememberCredentials", false));
+
         newAccButton = (Button) findViewById(R.id.buttonCreateAcc);
+        loginButton = (Button) findViewById(R.id.buttonLogin);
+
         newAccButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
                 goToUrl("https://www.calottery.com/register");
             }
         });
-        loginButton = (Button) findViewById(R.id.buttonLogin);
-        loginButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                EditText user = (EditText) findViewById(R.id.usernameText);
-                TicketInfo.username = user.getText().toString();
-                EditText pass = (EditText) findViewById(R.id.passwordText);
-                TicketInfo.password = pass.getText().toString();
 
-                if (TicketInfo.setFull && TicketInfo.setID)
-                {
-                    startActivity(new Intent(getApplicationContext(),TestWebInfoViewer.class));
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String enteredUsername = editTextUsername.getText().toString();
+                String enteredPassword = editTextPassword.getText().toString();
+
+                SharedPreferences.Editor editor = sharedPrefs.edit();
+
+                if (switchRememberMe.isChecked()) {
+                    editor.putString("username", enteredUsername);
+                    editor.putString("password", enteredPassword);
                 }
-                else
-                {
-                    startActivity(new Intent(getApplicationContext(),OcrCaptureActivity.class));
+
+                editor.putBoolean("rememberCredentials", switchRememberMe.isChecked());
+
+                editor.apply();
+
+                TicketInfo.username = enteredUsername;
+                TicketInfo.password = enteredPassword;
+
+                if (TicketInfo.barcodeFull.length() > 0 && TicketInfo.barcodeID.length() > 0) {
+                    Intent barcodeScannerScreen = new Intent(getApplicationContext(), OcrCaptureActivity.class);
+                    startActivity(barcodeScannerScreen);
+                } else {
+                    Intent codeSubmissionScreen = new Intent(getApplicationContext(), TestWebInfoViewer.class);
+                    startActivity(codeSubmissionScreen);
                 }
             }
         });
     }
 
-    public void goToUrl(String url){
+    public void goToUrl(String url) {
         Uri uri = Uri.parse(url);
-        Intent intent=new Intent(Intent.ACTION_VIEW,uri);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         startActivity(intent);
     }
 }
