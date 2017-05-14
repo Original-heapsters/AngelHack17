@@ -60,6 +60,16 @@ public class OcrGraphic extends GraphicOverlay.Graphic {
         postInvalidate();
     }
 
+    public void checkFull(String input)
+    {
+
+    }
+
+    public void checkID(String input)
+    {
+        return 
+    }
+
     public int getId() {
         return mId;
     }
