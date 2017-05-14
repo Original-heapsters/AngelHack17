@@ -39,7 +39,7 @@ public class OcrDetectorProcessor implements Detector.Processor<TextBlock> {
                 TicketInfo.setID = true;
             }
 
-            if (checkID(detectedText) || checkFull(detectedText)) {
+            if (checkID(detectedText) || checkFull(detectedText) || checkNumber(detectedText) || checkDate(detectedText)) {
 
                 OcrGraphic graphic = new OcrGraphic(mGraphicOverlay, item);
                 mGraphicOverlay.add(graphic);
@@ -78,6 +78,35 @@ public class OcrDetectorProcessor implements Detector.Processor<TextBlock> {
         }
         return isFull;
 
+    }
+
+    public boolean checkDate(String input)
+    {
+        boolean isDate = true;
+
+        if (input.contains("/") && input.length() >= 10 && input.length() < 12)
+        {
+            return isDate;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public boolean checkNumber(String input)
+    {
+        boolean isNumber = true;
+
+        try {
+            Double.parseDouble(input);
+        } catch(NumberFormatException e) {
+            isNumber = false;
+        } catch(NullPointerException e) {
+            isNumber = false;
+        }
+
+        return isNumber;
     }
 
     public boolean checkID(String input)
