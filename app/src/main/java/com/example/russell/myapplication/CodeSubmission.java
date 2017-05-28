@@ -70,6 +70,10 @@ public class CodeSubmission extends Activity {
         Button titlebutton = (Button) findViewById(R.id.button2);
         titlebutton.setOnClickListener(new OnClickListener() {
             public void onClick(View arg0) {
+                TicketInfo.barcodeFull = "";
+                TicketInfo.barcodeID = "";
+                TicketInfo.setFull = false;
+                TicketInfo.setID = false;
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
         });

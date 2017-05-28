@@ -1,17 +1,7 @@
 package com.example.russell.myapplication.interfaces;
 
 import android.graphics.Bitmap;
-import android.net.http.SslError;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.webkit.ClientCertRequest;
-import android.webkit.HttpAuthHandler;
-import android.webkit.SslErrorHandler;
-import android.webkit.WebResourceError;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -44,6 +34,10 @@ public class HackWebViewClient extends WebViewClient {
         } else if (url.contains("www.calottery.com/play/second-chance/scratchers-second-chance")) {
             handleCodeEntryPage(view);
         }
+        else
+        {
+            handleLogOut(view);
+        }
     }
 
     private void handleLogIn(WebView view) {
@@ -62,6 +56,11 @@ public class HackWebViewClient extends WebViewClient {
         view.evaluateJavascript(sbEmail.toString(), null);
         view.evaluateJavascript(sbPassword.toString(), null);
         view.evaluateJavascript(loginCommand, null);
+    }
+
+    private void handleLogOut(WebView view) {
+        String logoutCommand = "document.getElementById(\"objHeader_hlkSignOut\").click();";
+        view.evaluateJavascript(logoutCommand, null);
     }
 
     private void handleRedirectToEntryPage(WebView view) {
