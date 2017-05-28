@@ -1,27 +1,18 @@
 package com.example.russell.myapplication;
 
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Bundle;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.example.russell.myapplication.interfaces.HackWebViewClient;
-
-import org.jsoup.Connection;
-
-import java.io.IOException;
 
 public class CodeSubmission extends Activity {
 
@@ -79,7 +70,7 @@ public class CodeSubmission extends Activity {
         Button titlebutton = (Button) findViewById(R.id.button2);
         titlebutton.setOnClickListener(new OnClickListener() {
             public void onClick(View arg0) {
-//                new Title().execute();
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
         });
     }

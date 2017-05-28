@@ -17,7 +17,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -298,7 +297,7 @@ public class OcrCaptureActivity extends AppCompatActivity {
 
     public void FoundTicketInfo()
     {
-        startActivity(new Intent(getApplicationContext(),ImageProcessing.class));
+        startActivity(new Intent(getApplicationContext(),CodeSubmission.class));
     }
 
     private class ScaleListener implements ScaleGestureDetector.OnScaleGestureListener
